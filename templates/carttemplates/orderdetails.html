@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <style>
+            .gradient-custom {
+                /* fallback for old browsers */
+                background: #a6c0fe;
+                
+                /* Chrome 10-25, Safari 5.1-6 */
+                background: -webkit-linear-gradient(to top left, rgba(166, 192, 254, 1), rgba(246, 243, 255, 1));
+                
+                /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                background: linear-gradient(to top left, rgba(166, 192, 254, 1), rgba(246, 243, 255, 1));
+            }
+        </style>
+        
+        
+    </head>
+    
+    <body>
+        <section class="h-100 gradient-custom">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-lg-10 col-xl-8">
+                        <div class="card" style="border-radius: 10px;">
+                            <div class="card-header px-4 py-5">
+                                <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: blue;">{{order.firstname}}</span>!</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <p class="lead fw-normal mb-0" style="color: blue;">Receipt</p>
+                                    <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p>
+                                </div>
+                           
+                                {% for product in orderproduct %}
+                                <div class="card shadow-0 border mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img src="{{product.product.images.url}}"
+                                                    class="img-fluid" alt="Phone">
+                                            </div>
+                                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0" style="color: blue;">{{product.product}}</p>
+                                            </div>
+                                            {% comment %} <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small" style="color: blue;">Pink rose</p>
+                                            </div> {% endcomment %}
+                                            {% comment %} <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small" style="color: blue;">Capacity: 32GB</p>
+                                            </div> {% endcomment %}
+                                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small" style="color: blue;">{{product.quantity}}</p>
+                                            </div>
+                                            <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                                <p class="text-muted mb-0 small" style="color: blue;">₹ {{product.product.price}}</p>
+                                            </div>
+    
+                                        </div>
+                                        <hr class="mb-4" style="background-color: blue; opacity: 1;">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-2">
+                                                {% comment %} <p class="text-muted mb-0 small" style="color: blue;">Track Order</p> {% endcomment %}
+                                            </div>
+                                            <div class="col-md-10">
+                                       
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                                {% endfor %}
+                                <div class="d-flex justify-content-between pt-2">
+                                    <p class="fw-bold mb-0" style="color: blue;">Order Details</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Subtotal</span>₹ {{order.order_total}}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p class="text-muted mb-0" style="color: blue;">Invoice Date : {{order.created_at}}</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Tax</span>₹ {{order.tax}} </p>
+                                </div>
+                                <div class="d-flex justify-content-between pt-2">
+                                    <p class="text-muted mb-0" style="color: blue;">Invoice Number : 788152</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> ₹ {{order.discount_price}}</p>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mb-5">
+                                    <p class="text-muted mb-0" style="color: blue;">Order number : {{order.order_number}}</p>
+                                    <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 px-4 py-5"
+    style="background-color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; color: black;">
+    <h5 class="d-flex align-items-center justify-content-end text-uppercase mb-0">Total
+        paid: <span class="h2 mb-0 ms-2">₹ {{grand_total}}</span></h5>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <script src="" async defer></script>
+    </body>
+</html>

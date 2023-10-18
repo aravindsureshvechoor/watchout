@@ -1,0 +1,113 @@
+{% extends "usertemplates/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 60%; /* Adjust the width as needed */
+        margin: 0 auto; /* Center the table horizontally */
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+</head>
+<body>
+
+<table>
+<thead>
+    <tr>
+        <th>Order No</th>
+        <th>Date</th>
+       
+        <th>Total Price</th>
+        <th>Order Status</th>
+        <th>Payment Method</th>
+        <th>Action</th>
+        <th>Order Details</th>
+        <th>Invoice</th>
+    </tr>
+</thead>
+<tbody>
+    {% for order in orders %}
+    <tr>
+        <td>{{order.order_number}}</td>
+        <td>{{order.created_at}}</td>
+
+        <td>₹ {{order.order_total}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.payment.payment_method}}</td>
+        {% if order.status == 'New' %}
+        <td>
+            <a href="{% url 'cancelorder' order.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</a>
+        </td>
+        
+{% elif order.status == 'Completed' %}
+    <td><a href="{% url 'returnorder' order.id %}" class="btn btn-primary">Return</a></td>
+{% elif order.status == 'Cancelled' %}
+<td>Cancelled</td>
+{% elif order.status == 'Returned' %}
+<td>Returned</td>
+{% else %}
+    <td>Pending</td>
+{% endif %}
+<td><a href="{% url 'orderdetails' order.id %}" class="btn btn-primary">Details</a></td>
+   
+{% if order.payment.payment_method == 'Razorpay' or order.status == 'Completed'%}
+<td><a href="{% url 'invoice' order.id %}"  class="btn btn-success">Invoice</a></td>
+</tr>
+{% elif order.status == 'Cancelled' %}
+<td><p>Not available</p></td>
+</tr>
+{% else %}
+<td><p>Not available</p></td>
+</tr>
+{% endif %}
+
+
+
+
+    <!-- Add more rows for other orders -->
+{% endfor %}
+</tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+{% endblock content %}

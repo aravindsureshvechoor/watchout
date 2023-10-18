@@ -1,0 +1,239 @@
+
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    .message-success {
+        color: red;
+        font-weight: bold; 
+        font-size:32px;
+    }
+    /* Define a CSS rule to style the anchor tag with class 'icon_close' */
+    a.icon_close {
+        color: black; /* Set the text color to black */
+        text-decoration: none; /* Remove underline */
+        font-weight: bold; /* Make the icon bold, adjust as needed */
+        font-size: 16px; /* Adjust the font size as needed */
+    }
+
+    .blue-text {
+        color: blue;
+    }
+    
+    
+
+
+</style>
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Cart Section Begin -->
+    <section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shop__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if not cart_items %}
+                                <h1 style="color: blue; text-align: center;">Your cart is empty</h1>
+                                <br>
+                                <br>
+                                
+
+                                {%else%} 
+                               
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <img src="{{ cart_item.product.images.url }}" alt="" style="width: 100px; height: 100px;">
+
+                                        <div class="cart__product__item__title">
+                                            <h6><a href="{% url 'productinfo' cart_item.product.id %}">{{cart_item.product.product_name}}</a></h6>
+                                        </div>
+                                    </td>
+                                    {% if cart_item.product.offerprice != cart_item.product.price %}
+                                    <td class="cart__price">₹ {{cart_item.product.offerprice}}</td>
+                                    {% else %}
+                                    <td class="cart__price">₹ {{cart_item.product.price}}</td>
+                                    {% endif %}
+                                    <td class="cart__quantity">
+                                        <div class="pro-qty-1">
+
+                                            <div class="input-group-prepend">
+                                                <a style = 'padding:10px' href="{% url 'cartdecrement' cart_item.id %}" class="dec-link"  class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+                                   
+                                            <input type="text" class="form-control" style = 'text-align:center'  value="{{cart_item.quantity}}" id="item-{{cart_item.id}}-quantity" readonly>
+                                            
+                                                <a style = 'padding:10px' href="{% url 'add_cart' cart_item.product.id %}" class="inc-link"  class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+                                            </div>
+
+                                            
+                                        </div>
+                                    </td>
+                                    <td class="cart__total"><input id="prdt_total_{{cart_item.id}}" class="item_price" {% if cart_item.product.offerprice != cart_item.product.price %}value="{{cart_item.product.offerprice}}" {% else %} value="{{cart_item.sub_total}}"{% endif %}readonly></td>
+                                    <td class="cart__close">
+                                        <a href="{% url 'removeitem' cart_item.id %}" class="icon_close" onclick="return confirmDelete();"></a>
+                                    </td>
+                                    
+                                    
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div  class='message-success'>{% for message in messages%}
+            {{message}}
+            {% endfor %}</div> {% endcomment %}
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="{% url 'shop' %}">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn update__btn">
+                        <a href="{% url 'cart' %}"><span class="icon_loading"></span> Update cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span class="cart-total">₹ {{total}}</span></li>
+                            <li>Tax <span class="tax">₹ {{tax}}</span></li>
+                            <li>Grand Total <span class="grand-total">₹ {{grandtotal}}</span></li>
+                        </ul>
+                        <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Cart Section End -->
+
+    <style>
+        .item_price{
+            border:0;
+        }
+    </style>
+
+
+    <script>
+        function confirmDelete() {
+            // Display a confirmation dialog
+            var confirmation = confirm("Are you sure you want to remove this item from cart?");
+    
+            // Check if the user clicked OK or Cancel
+            if (confirmation) {
+                // The user clicked OK, proceed with the deletion
+                return true;
+            } else {
+                // The user clicked Cancel, do not proceed with the deletion
+                return false;
+            }
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.dec-link, .inc-link', function(event) {
+                event.preventDefault();
+                const url = $(this).attr('href');
+                const itemId = $(this).parent().find('input').attr('id').split('-')[1];
+                
+    
+                updateQuantity(url, itemId);
+            });
+    
+            function updateQuantity(url, itemId) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.error) {
+                            alert(data.error);
+                        } else if (data.removed) {
+                            alert('Product Removed From Cart');
+                            location.reload();
+                        } else {
+                            // Update the input field with the corresponding item ID
+
+                    
+
+
+                            const quantityInput = $('#item-' + itemId + '-quantity');
+                            quantityInput.val(data.quantity);
+                            const prdTotal = $('#prdt_total_'+itemId)
+                            prdTotal.val(data.prd_total+".00");
+
+                     
+                            
+
+    
+                            // Update the total price
+                            //const price = parseFloat(data.price); // Convert to a floating-point number
+                            //const quantity = parseInt(data.quantity); // Convert to an integer number
+                            //const total = price * quantity;
+                            //const totalPriceElement = quantityInput.closest('tr').find('.shoping__cart__total');
+                            //totalPriceElement.text('$' + total.toFixed(2));
+    
+
+    
+    
+                            // Update cart total, tax, and grand total
+                            const cartTotalElement = $('.cart-total');
+                            cartTotalElement.text('₹' + data.total);
+
+                            const taxElement = $('.tax');
+                            taxElement.text('₹' + data.tax);
+
+                            const grandTotalElement = $('.grand-total');
+                            grandTotalElement.text('₹' + data.grandtotal);
+
+                            
+                        }
+                    },
+                    error: function(error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }
+        });
+    </script>
+    
+    {% endblock content %}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OTP Verification</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px; /* Increased font size */
+        }
+
+        p {
+            color: #666;
+            font-size: 16px; /* Increased font size */
+        }
+
+        #otpForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Increased gap between elements */
+        }
+
+        #otpInput {
+            padding: 15px; /* Increased padding */
+            border: 2px solid #ccc; /* Increased border width */
+            border-radius: 8px; /* Increased border radius */
+            font-size: 18px; /* Increased font size */
+            width: 250px; /* Increased input field width */
+            text-align: center;
+        }
+
+        #verifyOTPButton {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px; /* Increased padding */
+            font-size: 18px; /* Increased font size */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #verifyOTPButton:hover {
+            background-color: #0056b3;
+        }
+
+        #loginButton {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px; /* Increased padding */
+            font-size: 18px; /* Increased font size */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #loginButton:hover {
+            background-color: #1a8c34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OTP Verification</h2>
+        <p>Please enter the OTP sent to your mobile number.</p>
+        
+        <form id="otpForm" method = 'post' action={% url 'otp' %}>
+             {% csrf_token %}
+            <input type="text" id="otpInput" name='enteredotp' placeholder="Enter OTP" required>
+            <input name='email' value='{{email}}' >
+            <button type="submit" id="verifyOTPButton">Verify OTP</button>
+        </form>
+        
+        <button id="loginButton" style="display: none;">Login</button>
+    </div>
+
+    <script>
+        // Add your JavaScript code for OTP verification and login here
+        document.getElementById("verifyOTPButton").addEventListener("click", function() {
+            // Add logic to verify the entered OTP
+            // If OTP is valid, show the "Login" button
+            document.getElementById("loginButton").style.display = "block";
+        });
+
+        document.getElementById("loginButton").addEventListener("click", function() {
+            // Add logic to handle the login process
+            // Redirect the user to the login page or perform any necessary actions
+        });
+    </script>
+</body>
+</html>

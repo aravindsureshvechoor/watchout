@@ -1,0 +1,353 @@
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Your CSS file */
+.small-logo {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    /* Add any other styling you require */
+}
+/* Add this CSS to match the discount pic size to the discount text */
+.discount__pic {
+    height: 70%; /* Set the height to 100% to match the container */
+}
+
+.discount__text {
+    height: 70%; /* Set the height to 100% to match the container */
+}
+.black-link {
+    color: black;
+}
+
+
+
+</style>
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">       
+                    <div class="categories__item categories__large__item set-bg"
+                    data-setbg="{% static 'img/categories/watch-2.jpg'%}">
+                   
+                    <div class="categories__text">
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <h1>Some serious collections , Watchout ...</h1>
+                        <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
+                        edolore magna aliquapendisse ultrices gravida.</p>
+                        <a href="{% url 'shop' %}">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/men.jpg'%}">
+                            <div class="categories__text">
+                                <h4>Men</h4>
+                             
+                                <a href="../shop?category=men">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/women.jpg'%}">
+                            <div class="categories__text">
+                                <h4>Women</h4>
+            
+                                <a href="../shop?category=women">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/sports.jpg'%}">
+                            <div class="categories__text">
+                                <h4>Sports</h4>
+                             
+                                <a href="../shop?category=sports">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/kids.jpg'%}">
+                            <div class="categories__text">
+                                <h4>Kids</h4>
+                             
+                                <a href="../shop?category=kids">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>New Arrivals</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                {% comment %} <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".women">Women’s</li>
+                    <li data-filter=".men">Men’s</li>
+                    <li data-filter=".kid">Kid’s</li>
+                    <li data-filter=".accessories">Sports</li>
+                    <!-- Add filters for other categories if needed -->
+                </ul> {% endcomment %}
+            </div>
+        </div>
+
+        <div class="row property__gallery">
+            {% for product in products %}
+            <div class="col-lg-4 col-md-4 col-sm-6 mix women">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.images.url }}">
+                        {% comment %} <div class="label new">"#"</div> {% endcomment %}
+                        <ul class="product__hover">
+                            <li><a href="{{ product.images.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            {% comment %} <li><a href="#"><span class="icon_heart_alt"></span></a></li> {% endcomment %}
+                            {% comment %} <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span></a></li> {% endcomment %}
+                            <li><a href="{% url 'productinfo' product.id %}"><span class="icon_info_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="{% url 'productinfo' product.id %}">{{ product.product_name }}</a></h6>
+
+                        {% if product.offerprice != product.price%}
+                        <div class="product__price">₹ {{ product.offerprice }}<span>₹ {{ product.price }}</span></div>
+                        {% else %}
+                        <div class="product__price">₹ {{ product.price }}</div>
+                        {% endif %}
+          
+                    
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+            </div><div class="row property__gallery">
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Product Section End -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Banner Section Begin -->
+<section class="banner set-bg" data-setbg="{% static 'img/banner/black_friday.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 col-lg-8 m-auto">
+                <div class="banner__slider owl-carousel">
+                    
+                </div>
+            </div>
+            <a href="{% url 'shop' %}" style="color: black; font-weight: bold; font-size: 30px; text-decoration: underline;">Shop Now</a>
+
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Trend Section Begin -->
+<section class="trend spad">
+    <div class="container">
+        <div class="row">
+            {% for pro in pros %}
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        {% comment %} <h4>Hot Trend</h4> {% endcomment %}
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="{{ pro.images.url }}" alt="" class="small-logo">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6><a href="{% url 'productinfo' pro.id %}" class="black-link">{{ pro.product_name }}</a></h6>
+                          
+                            {% if pro.offerprice != pro.price%}
+                        <div class="product__price">₹ {{ pro.offerprice }}<span>₹ {{ pro.price }}</span></div>
+                        {% else %}
+                        <div class="product__price">₹ {{ pro.price }}</div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+        </div><div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Trend Section End -->
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+<!-- Discount Section Begin -->
+<section class="discount">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 p-0">
+                <div class="discount__pic">
+                    <img src="{% static 'img/new-smartwatch-balancing-with-hand.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 p-0">
+                <div class="discount__text">
+                    <div class="discount__text__title">
+                        <span>Discount</span>
+                        <h2>Winter 2023</h2>
+                        <h5><span>Sale</span> 50%</h5>
+                    </div>
+                    <div class="discount__countdown" id="countdown-time">
+                        <div class="countdown__item">
+                            <span>22</span>
+                            <p>Days</p>
+                        </div>
+                        <div class="countdown__item">
+                            <span>18</span>
+                            <p>Hour</p>
+                        </div>
+                        <div class="countdown__item">
+                            <span>46</span>
+                            <p>Min</p>
+                        </div>
+                        <div class="countdown__item">
+                            <span>05</span>
+                            <p>Sec</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'shop' %}">Shop now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Discount Section End -->
+
+<!-- Services Section Begin -->
+<section class="services spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-car"></i>
+                    <h6>Free Shipping</h6>
+                    <p>For all oder over $99</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-money"></i>
+                    <h6>Money Back Guarantee</h6>
+                    <p>If good have Problems</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-support"></i>
+                    <h6>Online Support 24/7</h6>
+                    <p>Dedicated support</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-headphones"></i>
+                    <h6>Payment Secure</h6>
+                    <p>100% secure payment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services Section End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+

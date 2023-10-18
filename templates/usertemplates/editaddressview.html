@@ -1,0 +1,151 @@
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+   
+<style>
+    table {
+        width: 70%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f0f0f0;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .edit-button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .delete-button {
+        color: #ff0000;
+        text-decoration: none;
+    }
+</style>
+
+
+<form action="{% url 'addresssave' %}" method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Home Address</th>
+                <th>City</th>
+                <th>Pincode</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Add your data rows here -->
+            <tr>
+                <td><input type="text" name="firstname" value="{{ address.firstname }}"></td>
+                <td><input type="text" name="lastname" value="{{ address.lastname }}"></td>
+                <td><input type="email" name="email" value="{{ address.email }}"></td>
+                <td><input type="text" name="phone" value="{{ address.phone }}"></td>
+                <td><input type="text" name="homeaddress" value="{{ address.homeaddress }}"></td>
+                <td><input type="text" name="city" value="{{ address.city }}"></td>
+                <td><input type="text" name="pincode" value="{{ address.pincode }}"></td>
+                <td><input type="hidden" name="address_id" value="{{address.id}}"></td>
+                <td><button type="submit" class="edit-button">Save</button></td>
+                <td><a href="{% url 'discard' %}" class="delete-button">Discard</a></td>
+            </tr>
+            <!-- Add more data rows as needed -->
+        </tbody>
+    </table>
+</form>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+{% endblock content %}

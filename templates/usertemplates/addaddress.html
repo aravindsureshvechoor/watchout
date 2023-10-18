@@ -1,0 +1,163 @@
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .checkout__form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        background-color: #f8f8f8;
+    }
+
+    .checkout__form__table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .checkout__form__table th,
+    .checkout__form__table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .checkout__form__table th {
+        background-color: #f0f0f0;
+    }
+
+    .checkout__form__table input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .checkout__form__checkbox {
+        margin-bottom: 20px;
+    }
+
+    .checkout__form button {
+        background-color: #ff6b6b;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .checkout__form button:hover {
+        background-color: #ff4747;
+    }
+</style>
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<form method="post" action="{% url 'submitaddress' %}" class="checkout__form" onsubmit="return validateForm()">
+    {% csrf_token %}
+    <table class="checkout__form__table">
+        <tr>
+            <th colspan="2">Add Address</th>
+        </tr>
+        <tr>
+            <td>First Name <span>*</span></td>
+            <td>Last Name <span>*</span></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="firstname" name="firstname" required></td>
+            <td><input type="text" id="lastname" name="lastname" required></td>
+        </tr>
+        <tr>
+            <td>Email <span>*</span></td>
+            <td>Phone <span>*</span></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="email" name="email" required></td>
+            <td><input type="text" id="phone" name="phone" required></td>
+        </tr>
+        <tr>
+            <td>Home Address <span>*</span></td>
+            <td>City <span>*</span></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="homeaddress" name="homeaddress" placeholder="Street Address" required></td>
+            <td><input type="text" id="city" name="city" required></td>
+        </tr>
+
+        <tr>
+            <td>Pin/Postal Code <span>*</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="pincode" name="pincode" required></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="checkout__form__checkbox">
+        <!-- Include your checkboxes here -->
+    </div>
+
+    <div class="checkout__form__checkbox">
+        <!-- Include your checkboxes here -->
+    </div>
+
+    <!-- Add your additional checkboxes as needed -->
+
+    <button type="submit">Submit</button>
+    <a href="{% url 'editaddress' %}" style="display: inline-block; padding: 10px 20px; background-color:blue; color: white; text-decoration: none;">See Your Addresses</a>
+
+
+
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<script>
+    function validateForm() {
+        var firstname = document.getElementById("firstname").value;
+        var lastname = document.getElementById("lastname").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+        var homeaddress = document.getElementById("homeaddress").value;
+        var city = document.getElementById("city").value;
+        var pincode = document.getElementById("pincode").value;
+
+        if (firstname === "" || lastname === "" || email === "" || phone === "" || homeaddress === "" || city === "" || pincode === "") {
+            alert("Please fill in all required fields.");
+            return false; // Prevent form submission
+        }
+
+        // You can add more validation rules here if needed
+
+        return true; // Allow form submission
+    }
+</script>
+
+{% endblock content %}

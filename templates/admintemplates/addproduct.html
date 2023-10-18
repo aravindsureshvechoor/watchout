@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Add Product</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        div {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea,select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Add Product</h1>
+        <form method="post" action="{% url 'addproduct' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" required><br>
+        
+            <label for="product_category">Product Category:</label>
+            {% comment %} <input type="text" id="product_category" name="product_category" required><br> {% endcomment %}
+
+
+            <select class="form-select" aria-label="Default select example" name="category_id">
+                <option selected disabled>Select Category</option>
+                {%for category in categories%}
+                <option value="{{category.id}}">{{category.category_name}}</option>
+                {%endfor%}
+              </select>
+
+
+
+        
+            <label for="product_description">Product Description:</label><br>
+            <textarea id="product_description" name="product_description" rows="4" required></textarea><br>
+        
+            <label for="product_price">Product Price:</label>
+            <input type="text" id="product_price" name="product_price" required><br>
+
+            <label for="product_stock">Product Stock:</label>
+            <input type="text" id="product_stock" name="product_stock" required><br>
+        
+            {% comment %} <label for="product_slug">Product Slug:</label>
+            <input type="text" id="product_slug" name="product_slug" required><br> {% endcomment %}
+        
+            <label for="product_image">Product Image:</label>
+            <input type="file" id="product_image" name="product_image" accept="image/*" required><br>
+        
+            <img id="image-preview" src="#" alt="Image Preview">
+        
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // When a file is selected, display a preview of the image
+            document.getElementById("product_image").addEventListener("change", function () {
+                readURL(this);
+            });
+
+            // Function to read and display the selected image
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var imagePreview = document.getElementById("image-preview");
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = "block"; // Show the image preview
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

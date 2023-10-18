@@ -1,0 +1,205 @@
+
+
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+
+
+<style>
+
+
+
+    /* Style for the modal container */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.7); /* Overlay background with some transparency */
+    }
+    
+    /* Style for the modal content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 10% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+    
+    /* Close button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    
+</style>    
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">{{products.category}} </a>
+                        <span>{{products.product_name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__left product__thumb nice-scroll">
+                            <a class="pt active" href="#product-1">
+                                <img src="{{ products.images.url }}" alt="">
+                            </a>
+                            <a class="pt" href="#product-2">
+                                <img src="{{ products.images.url }}" alt="">
+                            </a>
+                            <a class="pt" href="#product-3">
+                                <img src="{{ products.images.url }}" alt="">
+                            </a>
+                            <a class="pt" href="#product-4">
+                                <img src="{{ products.images.url }}" alt="">
+                            </a>
+                        </div>
+                        <div class="product__details__slider__content">
+                            <div class="product__details__pic__slider owl-carousel">
+                                <img data-hash="product-1" class="product__big__img" src="{{ products.images.url }}" alt="">
+                                <img data-hash="product-2" class="product__big__img" src="{{ products.images.url }}" alt="">
+                                <img data-hash="product-3" class="product__big__img" src="{{ products.images.url }}" alt="">
+                                <img data-hash="product-4" class="product__big__img" src="{{ products.images.url }}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="product__details__text">
+                        <h3>{{products.product_name}} <span>Brand: Watchout More Watches from Watchout</span></h3>
+                        <div class="product__details__price">$ {{products.price}} <span>₹ 1000.00</span></div>
+                        <p>Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit, sed quia consequuntur
+                        magni lores eos qui ratione voluptatem sequi nesciunt.</p>
+                        <div class="product__details__button">
+                            <div class="quantity">
+                                <div class="pro-qty-1">
+                                    <div class="input-group-prepend">
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{% url 'add_to_cart' products.id %}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <a href="{% url 'addtowishlist' products.id %}" class="cart-btn"><span class="icon_heart_alt"></span> Add to Wishlist</a>
+                            <!-- Button to open the modal -->
+{% comment %} <a href="#" class="cart-btn" onclick=""><span class="feedback-icon"></span> Feedback's</a> {% endcomment %}
+
+
+
+                            
+
+                        </div>
+                        <div class="product__details__widget">
+                            <ul>
+                                {% comment %} <li>
+                                    <span>Availability:</span>
+                                    <div class="stock__checkbox">
+                                        <label for="stockin">
+                                            In Stock
+                                            <input type="checkbox" id="stockin">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </li> {% endcomment %}
+                             
+                                <li>
+                                    <span>Promotions:</span>
+                                    <p>Free shipping</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- feedbacks.html (Django template) -->
+
+<div class="col-lg-12">
+    <div class="product__details__tab">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Feedback's</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                <!-- Comment submission form -->
+                <form id="comment-form" method="post" action={% url 'addfeedback' products.id %}>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="comment">Leave a Comment:</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Comment</button>
+                </form>
+
+                <!-- Comments section -->
+                <div id="comments">
+                    {% for feedback in feedbacks %}
+                    <div class="comment">
+                        <strong>{{feedback.currentuser.first_name}}  {{feedback.currentuser.last_name}}</strong>      <span>on {{feedback.created_at}}:</span>
+                        <br>
+                        <strong>{{feedback.comment}}</strong>
+                    </div>
+                    <br>
+                
+                    {% endfor %}
+                </div>
+
+                <!-- Display pagination links -->
+               <div class="pagination">
+                <span class="step-links">
+                    {% if feedbacks.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ feedbacks.previous_page_number }}">previous</a>
+                    {% endif %}
+                    
+                    <span class="current-page">{{ feedbacks.number }}</span>
+                    
+                    {% if feedbacks.has_next %}
+                        <a href="?page={{ feedbacks.next_page_number }}">next</a>
+                        <a href="?page={{ feedbacks.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Product Details Section End -->
+
+    
+    
+    {% endblock content %}

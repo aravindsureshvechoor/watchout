@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <style>
+
+        /* Style the anchor tag to look like a button */
+        .button {
+            display: inline-block;
+            padding: 10px 20px; /* Adjust the padding as needed */
+            background-color: #007bff; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none; /* Remove underline from anchor tag */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Add pointer cursor on hover */
+        }
+        
+        /* Style the anchor tag on hover */
+        .button:hover {
+            background-color: #0056b3; /* Change background color on hover */
+        }
+        
+
+    </style>
+    
+    <body>
+        <section style="background-color: #f0f8ff;">
+            <div class="container py-5">
+              <div class="row">
+                <div class="col">
+                  <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'accountinfo' %}">Profile</a></li>
+                    
+                    </ol>
+                  </nav>
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="card mb-4">
+                    <div class="card-body text-center">
+                      {% if usr.profilepic %}
+                      <img src="{{usr.profilepic.url}}" alt="#"
+                      class="rounded-circle img-fluid" style="width: 150px;">
+                    {% endif %}
+                      <h2 class="my-3">{{usr.first_name}}</h2>
+                      <p class="text-muted mb-1">Watchout's</p>
+                      <p class="text-muted mb-4">Favourite User</p>
+                      
+                    </div>
+                  </div>
+                  <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-0">
+            
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0">First Name</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{usr.first_name}}</p>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0">Last Name</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{usr.last_name}}</p>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0">Username</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{usr.user_name}}</p>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0">Email</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{usr.email}}</p>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0">Date Joined</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <p class="text-muted mb-0">{{usr.date_joined}}</p>
+                        </div>
+                      </div>
+                      <br>
+                      <a href="{% url 'editaccountinfo' %}" class="button">Edit</a>
+                      <a href="{% url 'addaddress' %}" class="button">Add Addresses</a>
+                      <a href="{% url 'myorders' %}" class="button">My Orders</a>
+                      <a href="{% url 'coupondetails' %}" class="button">Coupons</a>
+                      <a href="{% url 'wallet' %}" class="button">My Wallet</a>
+
+
+                    </div>
+                  </div>
+                  {% for messages in message %}
+                   {{message}}
+                {% endfor %}
+              </div>
+            </div>
+          </section>
+        <script src="" async defer></script>
+    </body>
+</html>

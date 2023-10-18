@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="#">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .edit-product-container {
+            background-color: #fff;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .save-button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Add styling to the discard-button class */
+.discard-button {
+    display: inline-block;
+    padding: 10px 20px; /* Adjust the padding as needed */
+    background-color: #ff0000; /* Choose your desired button color */
+    color: #fff; /* Text color */
+    text-decoration: none; /* Remove underlines from the link text */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer;
+    font-size: 16px; /* Adjust the font size as needed */
+}
+
+/* Add hover effect (optional) */
+.discard-button:hover {
+    background-color: #cc0000; /* Change color on hover */
+}
+/* styles.css */
+.smaller-image {
+    max-width: 200px; /* Adjust the max-width as needed */
+    height: auto;
+}
+
+
+    </style>
+<!-- Inside the <head> section of your HTML file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+</head>
+<body>
+    <div class="edit-product-container">
+        <h2>Edit Account Info</h2>
+        <form method="post" action="{% url 'saveuseredit' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="{{ usr.first_name }}" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="{{ usr.last_name }}" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="user_name">Username:</label>
+                <input type="text" id="user_name" name="user_name" value="{{ usr.user_name }}" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" value="{{ usr.email }}" required>
+            </div>
+            
+            <input name="user_id" type="hidden" value="{{ usr.id }}">
+            
+            <br>
+            <br>
+        
+        
+        
+            <div class="form-group">
+                <button type="submit" class="save-button">Save Changes</button>
+                <a href="{% url 'discarduseredit' %}" class="discard-button">Discard</a>
+                
+            </div>
+        </form>
+
+        {% comment %} profilepicupload {% endcomment %}
+
+        <form method="post" action="{% url 'profilepic' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+        <label for="product_image">Upload new profilepic:</label>
+            <input type="file" id="product_image" name="product_image" accept="image/*" required><br>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+        
+    </div>
+</body>
+</html>

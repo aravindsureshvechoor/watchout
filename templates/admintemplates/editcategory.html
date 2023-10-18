@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Category</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        div {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Add styling to the discard-button class */
+        .discard-button {
+            display: inline-block;
+            padding: 10px 20px; /* Adjust the padding as needed */
+            background-color: #ff0000; /* Choose your desired button color */
+            color: #fff; /* Text color */
+            text-decoration: none; /* Remove underlines from the link text */
+            border: none; /* Remove borders */
+            border-radius: 5px; /* Add rounded corners */
+            cursor: pointer;
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        
+        /* Add hover effect (optional) */
+        .discard-button:hover {
+            background-color: #cc0000; /* Change color on hover */
+        }
+        
+
+
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Edit Category</h1>
+       
+        <form method="post" action="{% url 'editcategory' %}">
+            {% csrf_token %}
+            <label for="category_name">Category Name:</label>
+            <input type="text" id="category_name" name="category_name" value="{{ cats.category_name }}" required><br>
+
+            {% comment %} <label for="category_slug">Category Slug:</label>
+            <input type="text" id="category_slug" name="category_slug" value="{{ cats.slug }}" required><br> {% endcomment %}
+
+            <label for="category_description">Category Description:</label><br>
+            <textarea id="category_description" name="category_description" rows="4" required>{{ cats.description }}</textarea><br>
+
+            <input name='category_id' type='hidden' value = {{cats.id}}>
+            <button type="submit">Update Category</button>
+            <a href="{% url 'discardcategorychanges' %}" class="discard-button">Discard</a>
+        </form>
+        
+    </div>
+</body>
+</html>

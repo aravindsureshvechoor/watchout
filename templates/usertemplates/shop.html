@@ -1,0 +1,184 @@
+
+
+{% extends "usertemplates/base.html" %}
+{% load static %}
+{% block content %}
+
+
+    <style>
+        .message-success {
+            color: green;
+            font-weight: bold; 
+        }
+        
+        
+        
+        /* Style the select container */
+        .select-container {
+            position: relative;
+        }
+        
+        /* Style the custom select */
+        .custom-select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            appearance: none;
+            cursor: pointer;
+            background-image: linear-gradient(45deg, transparent 50%, #007bff 50%), linear-gradient(135deg, #007bff 50%, transparent 50%);
+            background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+            background-size: 8px 8px, 8px 8px;
+            background-repeat: no-repeat;
+            transition: border-color 0.3s;
+        }
+        
+        /* Style the select on hover */
+        .custom-select:hover {
+            border-color: #0056b3;
+        }
+        
+        /* Style the select when it's open */
+        .custom-select:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);
+        }
+        
+        
+        /* Style for the product image */
+        .product__item__pic {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Add a transition for smooth zooming */
+        .product__item__pic img {
+            transition: transform 0.3s;
+        }
+        
+        /* Scale the image on hover */
+        .product__item__pic:hover img {
+            transform: scale(1.1); /* You can adjust the scale factor as needed */
+        }
+        
+        
+            </style>
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="shop__sidebar">
+                        <div class="sidebar__filter">
+                            <div class="section-title">
+                                <h4>Shop by price</h4>
+                            </div>
+                            <form id="filteringForm" method="get" action="{% url 'productsorting' %}">
+                                {% comment %}{% csrf_token %}{% endcomment %}
+                                <div class="select-container" >
+                                    <select name="sorting_option" class="custom-select">
+                                        <option value="lowToHigh">Low to High</option>
+                                        <option value="highToLow">High to Low</option>
+                                    </select><br>
+                                    <select name="category" class="custom-select">
+                                        {% comment %} <option value="all">All</option> {% endcomment %}
+                                        <option value="men">Men</option>
+                                        <option value="women">Women</option>
+                                        <option value="kids">Kids</option>
+                                        <option value="sports">Sports</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </form>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+               
+
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{ product.images.url }} ">
+                                    <ul class="product__hover">
+                                        <li><a href="{{ product.images.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                        {% comment %} <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span></a></li> {% endcomment %}
+                                        <li><a href="{% url 'productinfo' product.id %}"><span class="icon_info_alt"></span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="{% url 'productinfo' product.id %}">{{ product.product_name }}</a></h6>
+                                    
+                                    {% if product.offerprice != product.price%}
+                        <div class="product__price">₹ {{ product.offerprice }}<span>₹ {{ product.price }}</span></div>
+                        {% else %}
+                        <div class="product__price">₹ {{ product.price }}</div>
+                        {% endif %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                        </div>
+                        <div class="row">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                        
+                        <!-- Add your other content here -->
+<div class="col-lg-12 text-center">
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}">previous</a>
+            {% endif %}
+            
+            <span class="current-page">
+                Page {{ products.number }} of {{ products.paginator.num_pages }}.
+            </span>
+            
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">next</a>
+                <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+<!-- Add your other content here -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+{% endblock content %}
