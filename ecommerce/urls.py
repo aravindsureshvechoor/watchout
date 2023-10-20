@@ -19,6 +19,7 @@ urlpatterns = [
     path('discarduseredit',views.discarduseredit,name='discarduseredit'),
     path('addaddress',views.addaddress,name='addaddress'),
     path('submitaddress',views.submitaddress,name='submitaddress'),
+    path('ordertimesubmitaddress',views.ordertimesubmitaddress,name='ordertimesubmitaddress'),
     path('editaddress',views.editaddress,name='editaddress'),
     path('editaddressview',views.editaddressview,name='editaddressview'),
     path('addresssave',views.addresssave,name='addresssave'),

@@ -65,7 +65,7 @@
 
 
 
-            <form method="post" action="{% url 'submitaddress' %}" class="checkout__form" onsubmit="return validateForm()">
+            <form method="post" action="{% url 'ordertimesubmitaddress' %}" class="checkout__form" onsubmit="return validateForm()">
                 {% csrf_token %}
                 <table class="checkout__form__table">
                     <tr>
@@ -84,8 +84,8 @@
                         <td>Phone <span>*</span></td>
                     </tr>
                     <tr>
-                        <td><input type="text" id="email" {% if address %}value={{address.email}}{% endif %} name="email" required></td>
-                        <td><input type="text" id="phone" {% if address %}value={{address.phone}}{% endif %} name="phone" required></td>
+                        <td><input type="email" id="email" {% if address %}value={{address.email}}{% endif %} name="email" required></td>
+                        <td><input type="number" id="phone" {% if address %}value={{address.phone}}{% endif %} name="phone"  required></td>
                     </tr>
                     <tr>
                         <td>Home Address <span>*</span></td>
@@ -101,7 +101,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="text" id="pincode" {% if address %}value={{address.pincode}}{% endif %} name="pincode" required></td>
+                        <td><input type="number" id="pincode" {% if address %}value={{address.pincode}}{% endif %} name="pincode" maxlength="6" required></td>
                         <td></td>
                     </tr>
                 </table>
@@ -115,8 +115,8 @@
                 </div>
             
                 <!-- Add your additional checkboxes as needed -->
-            <h3> Click submit to add address.</h3>
-            <h3> If address already exist , PLACE ORDER </h3>            
+            <h3> Click submit to add address . </h3>
+            <h3> If address already exist please SELECT ADDRESS and PLACE ORDER </h3>            
                 <button type="submit">Submit</button>
             
             
@@ -129,36 +129,33 @@
 
             <script>
                 function validateForm() {
-                    // Get form inputs
-                    const firstname = document.getElementById("firstname").value.trim();
-                    const lastname = document.getElementById("lastname").value.trim();
-                    const email = document.getElementById("email").value.trim();
-                    const phone = document.getElementById("phone").value.trim();
-                    const homeaddress = document.getElementById("homeaddress").value.trim();
-                    const city = document.getElementById("city").value.trim();
-                    const pincode = document.getElementById("pincode").value.trim();
+                    var firstname = document.getElementById("firstname").value.trim();
+                    var lastname = document.getElementById("lastname").value.trim();
+                    var email = document.getElementById("email").value.trim();
+                    var phone = document.getElementById("phone").value.trim();
+                    var homeaddress = document.getElementById("homeaddress").value.trim();
+                    var city = document.getElementById("city").value.trim();
+                    var pincode = document.getElementById("pincode").value.trim();
             
-                    // Regular expressions for validation
-                    const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-                    const phonePattern = /^\d{10}$/;
-                    const pincodePattern = /^\d{6}$/;
-            
-                    // Check for empty fields and length limits
-                    if (
-                        firstname === "" || firstname.length > 50 ||
-                        lastname === "" || lastname.length > 50 ||
-                        email === "" || email.length > 20 || !email.match(emailPattern) ||
-                        phone === "" || phone.length > 10 || !phone.match(phonePattern) ||
-                        homeaddress === "" || homeaddress.length > 50 ||
-                        city === "" || city.length > 50 ||
-                        pincode === "" || !pincode.match(pincodePattern)
-                    ) {
-                        alert("Please correct the form errors.");
+                    if (firstname === "" || lastname === "" || email === "" || phone === "" || homeaddress === "" || city === "" || pincode === "") {
+                        alert("Fields should not be empty");
                         return false; // Prevent form submission
-                    }
-                    return true; // Form is valid
+                    }    
+                       
+                        if (phone.toString().length < 10 || phone.toString().length >10) {
+                        alert("Enter Valid Phone Number");
+                        return false; // Prevent form submission
+                        }
+
+                        if (pincode.toString().length < 6 || pincode.toString().length >6) {
+                            alert("Enter Valid Pincode");
+                            return false; // Prevent form submission
+                            }
+                    
+                    return true; // Allow form submission
                 }
             </script>
+            
 
 
 

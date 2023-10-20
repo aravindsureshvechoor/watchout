@@ -82,8 +82,8 @@
             <td>Phone <span>*</span></td>
         </tr>
         <tr>
-            <td><input type="text" id="email" name="email" required></td>
-            <td><input type="text" id="phone" name="phone" required></td>
+            <td><input type="email" id="email" name="email" required></td>
+            <td><input type="number" id="phone" name="phone" required></td>
         </tr>
         <tr>
             <td>Home Address <span>*</span></td>
@@ -99,7 +99,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><input type="text" id="pincode" name="pincode" required></td>
+            <td><input type="number" id="pincode" name="pincode" required></td>
             <td></td>
         </tr>
     </table>
@@ -141,21 +141,29 @@
 
 <script>
     function validateForm() {
-        var firstname = document.getElementById("firstname").value;
-        var lastname = document.getElementById("lastname").value;
-        var email = document.getElementById("email").value;
-        var phone = document.getElementById("phone").value;
-        var homeaddress = document.getElementById("homeaddress").value;
-        var city = document.getElementById("city").value;
-        var pincode = document.getElementById("pincode").value;
+        var firstname = document.getElementById("firstname").value.trim();
+        var lastname = document.getElementById("lastname").value.trim();
+        var email = document.getElementById("email").value.trim();
+        var phone = document.getElementById("phone").value.trim();
+        var homeaddress = document.getElementById("homeaddress").value.trim();
+        var city = document.getElementById("city").value.trim();
+        var pincode = document.getElementById("pincode").value.trim();
 
         if (firstname === "" || lastname === "" || email === "" || phone === "" || homeaddress === "" || city === "" || pincode === "") {
-            alert("Please fill in all required fields.");
+            alert("Fields should not be empty");
             return false; // Prevent form submission
-        }
+        }    
+           
+            if (phone.toString().length < 10 || phone.toString().length >10) {
+            alert("Enter Valid Phone Number");
+            return false; // Prevent form submission
+            }
 
-        // You can add more validation rules here if needed
-
+            if (pincode.toString().length < 6 || pincode.toString().length >6) {
+                alert("Enter Valid Pincode");
+                return false; // Prevent form submission
+                }
+        
         return true; // Allow form submission
     }
 </script>

@@ -324,6 +324,32 @@ def submitaddress(request):
 
     return redirect('addaddress')
 
+def ordertimesubmitaddress(request):
+    if request.method == 'POST':
+        currentuser = Account.objects.get(id=request.user.id)
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        homeaddress = request.POST['homeaddress']
+        city = request.POST['city']
+        pincode = request.POST['pincode']
+
+        address = UserAddress.objects.create(
+            currentuser = currentuser,
+            firstname   = firstname,
+            lastname    = lastname,
+            email       = email,
+            phone       = phone,
+            homeaddress = homeaddress,
+            city        = city,
+            pincode     = pincode
+            )
+        address.save()
+        messages.success(request,'Address successfully added')
+
+    return redirect('checkout')
+
 def editaddress(request):
 
     addresses = UserAddress.objects.filter(currentuser=request.user)
