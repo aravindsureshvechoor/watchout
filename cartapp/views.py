@@ -107,7 +107,7 @@ def add_to_cart(request,product_id):
             }
 
             messages.success(request,"Item added to cart")
-            return redirect('shop')
+            return redirect('cart')
 
         elif product.is_available==False:
             messages.success(request,'Product is currently unavailable')
@@ -224,7 +224,7 @@ def addtowishlist(request,product_id):
                     )
                 wishlist_item.save()
                 messages.success(request,'Added to wishlist')
-                return redirect('shop')
+                return redirect('wishlist')
         except:
             wishlist_item = WishlistItem.objects.create(
                     product=product,
@@ -233,7 +233,7 @@ def addtowishlist(request,product_id):
                 )
             wishlist_item.save()
             messages.success(request,'Added to wishlist')
-            return redirect('shop')
+            return redirect('wishlist')
     else:
         messages.error(request,'Log in to add a product to wishlist')
         return redirect('usersignin')
@@ -309,6 +309,7 @@ def removeitem(request,cart_id):
         
     except ObjectDoesNotExist:
         pass
+    messages.success(request,"Item removed from cart")
     return redirect('cart')
 
     
@@ -475,7 +476,7 @@ def placeorder(request, total=0,quantity=0):
         order_items = OrderProduct.objects.filter(order=order)
         order_total = round(order.order_total,2)
         quantity = 0
-
+        request.session['grand_total']=order_total
         for item in order_items:
             total += item.product_price
             quantity += item.quantity
@@ -497,6 +498,8 @@ def cashondelivery(request):
     cur_user = request.user
     order = Order.objects.get(id=order_id)
     order.is_ordered = True
+    order.payment.payment_method = 'COD'
+    order.payment.save()
     order.save()
     cart_item = CartItem.objects.filter(currentuser=cur_user)
     cart_item.delete()
@@ -511,6 +514,38 @@ def cashondelivery(request):
 
     context = {'order':order}
     return redirect('myorders')
+
+def walletpayment(request):
+    
+    wallet = Wallet.objects.get(currentuser=request.user)
+    order_id = request.GET.get('ordr_id')
+    cur_user = request.user
+    order = Order.objects.get(id=order_id)
+    grand_total = request.session['grand_total']
+    if grand_total <= wallet.amount:
+        order.is_ordered = True
+        order.payment.payment_method = 'Wallet'
+        order.payment.save()
+        order.save()
+        cart_item = CartItem.objects.filter(currentuser=cur_user)
+        cart_item.delete()
+        wallet.amount -= grand_total
+        wallet.save()
+        messages.success(request,'Order success')
+
+        account = Account.objects.get(email=request.user)
+        subject = "Order Placed"
+        email   = account.email
+        sendermail = "Watchout Ecommerce Store"
+        message = f"An order has been placed , Please login to your account for more information , Thank You {account.first_name} ."
+        details = f"{message}"
+        send_mail(subject,details,sendermail,[email])
+
+        return redirect('myorders')
+    else:
+        messages.success(request,'Not enough amount in your wallet')
+        return redirect('wallet')
+
     
 def myorders(request):
     current_user = request.user
@@ -529,17 +564,20 @@ def cancelorder(request,order_id):
     order.save()
 
 
-    if Wallet.objects.filter(currentuser=request.user).exists():
+    if Wallet.objects.filter(currentuser=request.user).exists() and order.payment.payment_method == "Razorpay" or order.payment.payment_method == "Wallet" :
         wallet = Wallet.objects.get(currentuser=request.user)
         wallet.amount += round(float(order.order_total+order.tax)-float(order.discount_price),2)
         wallet.save()
-
+        return redirect(myorders)
     else:
-        Wallet.objects.create(currentuser=request.user,
-        amount = round(float(order.order_total+order.tax)-float(order.discount_price),2)
-        )
+        if order.payment.payment_method == "Razorpay" or order.payment.payment_method == "Wallet" :
+            Wallet.objects.create(currentuser=request.user,
+            amount = round(float(order.order_total+order.tax)-float(order.discount_price),2)
+            )
 
-    return redirect(myorders)
+            return redirect(myorders)
+        else:
+            return redirect(myorders)
 
 def returnorder(request,order_id):
     order = Order.objects.get(id=order_id)

@@ -23,6 +23,7 @@
 
 
 
+
 </style>
     <!-- Categories Section Begin -->
     <section class="categories">
@@ -119,7 +120,10 @@
             {% for product in products %}
             <div class="col-lg-4 col-md-4 col-sm-6 mix women">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{ product.images.url }}">
+                    <a href="{% url 'productinfo' product.id %}" class="product-link">
+                       <div> <div class="product__item__pic set-bg" data-setbg="{{ product.images.url }}"></div>
+                      </a>
+                      
                         {% comment %} <div class="label new">"#"</div> {% endcomment %}
                         <ul class="product__hover">
                             <li><a href="{{ product.images.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
@@ -129,7 +133,7 @@
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="{% url 'productinfo' product.id %}">{{ product.product_name }}</a></h6>
+                        <h6>{{ product.product_name }}</h6>
 
                         {% if product.offerprice != product.price%}
                         <div class="product__price">₹ {{ product.offerprice }}<span>₹ {{ product.price }}</span></div>

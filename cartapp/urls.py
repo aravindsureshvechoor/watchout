@@ -24,6 +24,7 @@ urlpatterns = [
     path('returnorder/<int:order_id>/',views.returnorder,name='returnorder'),
     path('orderdetails/<int:order_id>/',views.orderdetails,name='orderdetails'),
     path('applycoupon',views.applycoupon,name='applycoupon'),
+    path('walletpayment',views.walletpayment,name='walletpayment'),
 
     path('payment_page/<int:order_id>/',views.payment_page,name='payment_page'),
 

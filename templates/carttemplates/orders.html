@@ -69,7 +69,7 @@
 {% endif %}
 <td><a href="{% url 'orderdetails' order.id %}" class="btn btn-primary">Details</a></td>
    
-{% if order.payment.payment_method == 'Razorpay' or order.status == 'Completed'%}
+{% if order.payment.payment_method == 'Razorpay' or order.payment.payment_method == 'Wallet'  or order.status == 'Completed'%}
 <td><a href="{% url 'invoice' order.id %}"  class="btn btn-success">Invoice</a></td>
 </tr>
 {% elif order.status == 'Cancelled' %}
