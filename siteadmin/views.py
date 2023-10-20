@@ -25,42 +25,9 @@ def adminsignin(request):
 
         if user is not None and user.is_admin == True:
             auth.login(request, user)
-            # messages.success(request,'Successfuly Logged in')
+            messages.success(request,'Successfuly Logged in')
 
-            users = Account.objects.all().count()
-            # products = Product.objects.all().count()
-            prods = Product.objects.all()
-            p = prods.count()
-            productcount = {}
-            prodcount = []
-            for product in prods:
-                count = OrderProduct.objects.filter(product=product).count()
-                productcount[product.product_name] = count
-
-            prodcount = list(productcount.values())
-            orders = Order.objects.all().count()
-
-            data = Order.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(sales=Count('id'))
-            months = []
-            totals = []
-
-            for entry in data:
-                months.append(entry['month'].strftime("%b %Y"))
-                totals.append(entry['sales'])
-            
-            context = {
-                    'users':users,
-                    'prodcount':prodcount,
-                    'orders':orders,
-                    'prods':prods,
-                    'p':p,
-                    'months':months,
-                    'totals':totals
-                    }
-
-
-
-            return render(request,'admintemplates/index.html',context)
+            return redirect('admindashboard')
 
 
         else:
@@ -113,7 +80,38 @@ def categorymanagement(request):
 
 
 def admindashboard(request):
-    return render(request,'admintemplates/index.html')
+    users = Account.objects.all().count()
+    # products = Product.objects.all().count()
+    prods = Product.objects.all()
+    p = prods.count()
+    productcount = {}
+    prodcount = []
+    for product in prods:
+        count = OrderProduct.objects.filter(product=product).count()
+        productcount[product.product_name] = count
+
+    prodcount = list(productcount.values())
+    orders = Order.objects.all().count()
+
+    data = Order.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(sales=Count('id'))
+    months = []
+    totals = []
+
+    for entry in data:
+        months.append(entry['month'].strftime("%b %Y"))
+        totals.append(entry['sales'])
+    
+    context = {
+            'users':users,
+            'prodcount':prodcount,
+            'orders':orders,
+            'prods':prods,
+            'p':p,
+            'months':months,
+            'totals':totals
+            }
+
+    return render(request,'admintemplates/index.html',context)
 
 
 

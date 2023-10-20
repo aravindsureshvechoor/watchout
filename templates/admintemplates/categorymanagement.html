@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+{% comment %} <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> {% endcomment %}
 
 <style>
     body {
@@ -336,14 +336,6 @@
                 <span class="hide-menu">Order Management</span>
               </a>
             </li>
-            {% comment %} <li class="sidebar-item">
-              <a class="sidebar-link" href="{% url 'chart' %}" aria-expanded="false">
-                <span>
-                  <i class="ti ti-article"></i>
-                </span>
-                <span class="hide-menu">Charts</span>
-              </a>
-            </li> {% endcomment %}
             
             <li class="sidebar-item">
               <a class="sidebar-link" href="{% url 'coupon' %}" aria-expanded="false">
@@ -373,12 +365,9 @@
           </ul>
           <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
             <div class="d-flex">
-              {% comment %} <div class="unlimited-access-title me-3">
-                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-              </div> {% endcomment %}
+              
               <div class="unlimited-access-img">
-                {% comment %} <img src="../static/images/backgrounds/rocket.png" alt="" class="img-fluid"> {% endcomment %}
+                
               </div>
             </div>
           </div>
@@ -407,12 +396,7 @@
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               
-              {% comment %} <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="../static/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2"> {% endcomment %}
+              
                   <div class="message-body">
                     
                     <a href="{% url 'adminlogout'%}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
