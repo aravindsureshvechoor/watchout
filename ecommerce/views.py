@@ -173,8 +173,7 @@ def signout(request):
     messages.success(request,"Logged Out Successfully")
     return redirect('home')
 
-@never_cache
-@login_required(login_url='usersignin')
+
 def shop(request):
     category = request.GET.get('category')
     if category:
