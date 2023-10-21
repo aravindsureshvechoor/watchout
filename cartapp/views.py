@@ -3,6 +3,8 @@ from .models import *
 from siteadmin.models import *
 from ecommerce.models import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from ecommerce.decorators import never_cache
 from offerapp.models import *
 from django.contrib.sessions.models import Session
 import random
@@ -12,13 +14,15 @@ from django.http import JsonResponse
 from decimal import Decimal
 from django.core.mail import send_mail
 
+
 def _cart_id(request):  
     cart = request.session.session_key
     if not cart:
         cart = request.session.create()
     return cart
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def cart(request,total=0,quantity=0,cart_items=None):
 
     if request.user.is_authenticated:
@@ -50,8 +54,8 @@ def cart(request,total=0,quantity=0,cart_items=None):
         messages.error(request,'You should Signin first to add an item to your cart')
         return redirect('usersignin')
 
-
-
+@never_cache
+@login_required(login_url='usersignin')
 def add_to_cart(request,product_id):
     if request.user.is_authenticated:
         product = Product.objects.get(id=product_id) #get the product
@@ -117,8 +121,8 @@ def add_to_cart(request,product_id):
         return redirect('usersignin')
 
 
-
-
+@never_cache
+@login_required(login_url='usersignin')
 def add_cart(request,product_id):
     if request.user.is_authenticated:
         product = Product.objects.get(id=product_id) #get the product
@@ -196,8 +200,8 @@ def add_cart(request,product_id):
 
 
 
-
-
+@never_cache
+@login_required(login_url='usersignin')
 def wishlist(request):
     items = WishlistItem.objects.filter(currentuser=request.user)
     context = {
@@ -207,7 +211,8 @@ def wishlist(request):
 
     return render(request,'carttemplates/wishlist.html',context)
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def addtowishlist(request,product_id):
     if request.user.is_authenticated:
         product = Product.objects.get(id=product_id)
@@ -238,6 +243,8 @@ def addtowishlist(request,product_id):
         messages.error(request,'Log in to add a product to wishlist')
         return redirect('usersignin')
 
+@never_cache
+@login_required(login_url='usersignin')
 def removefromwishlist(request,wishlist_id):
     item = WishlistItem.objects.get(id=wishlist_id)
     item.delete()
@@ -245,7 +252,8 @@ def removefromwishlist(request,wishlist_id):
 
     return redirect('wishlist')
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def cartdecrement(request,cart_id):
     try:
         # product = Product.objects.get(id=product_id)
@@ -301,7 +309,8 @@ def cartdecrement(request,cart_id):
 
 
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def removeitem(request,cart_id):
     try:
         cart_item = CartItem.objects.get(id=cart_id)
@@ -314,7 +323,8 @@ def removeitem(request,cart_id):
 
     
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def checkout(request):
     tax = 0
     grandtotal = 0
@@ -358,6 +368,8 @@ def checkout(request):
         messages.success(request,'Unavailable')
         return redirect('cart')
 
+@never_cache
+@login_required(login_url='usersignin')
 def selectaddress(request):
     addresses = UserAddress.objects.filter(currentuser=request.user)
     context = {
@@ -366,6 +378,8 @@ def selectaddress(request):
 
     return render(request,'carttemplates/useraddress.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def selectaddressview(request):
 
     adrs = UserAddress.objects.filter(currentuser=request.user)
@@ -384,6 +398,8 @@ def selectaddressview(request):
 
     return redirect('checkout')
 
+@never_cache
+@login_required(login_url='usersignin')
 def placeorder(request, total=0,quantity=0):
   
     cur_user = request.user
@@ -492,7 +508,9 @@ def placeorder(request, total=0,quantity=0):
             'grand_total':order_total
         }
     return render(request,'carttemplates/payment.html',context)
-    
+
+@never_cache
+@login_required(login_url='usersignin')
 def cashondelivery(request):
     order_id = request.GET.get('ordr_id')
     cur_user = request.user
@@ -515,6 +533,8 @@ def cashondelivery(request):
     context = {'order':order}
     return redirect('myorders')
 
+@never_cache
+@login_required(login_url='usersignin')
 def walletpayment(request):
     
     wallet = Wallet.objects.get(currentuser=request.user)
@@ -546,7 +566,8 @@ def walletpayment(request):
         messages.success(request,'Not enough amount in your wallet')
         return redirect('wallet')
 
-    
+@never_cache
+@login_required(login_url='usersignin')  
 def myorders(request):
     current_user = request.user
  
@@ -558,6 +579,8 @@ def myorders(request):
     }
     return render(request, 'carttemplates/orders.html', context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def cancelorder(request,order_id):
     order = Order.objects.get(id=order_id)
     order.status = "Cancelled"
@@ -579,6 +602,8 @@ def cancelorder(request,order_id):
         else:
             return redirect(myorders)
 
+@never_cache
+@login_required(login_url='usersignin')
 def returnorder(request,order_id):
     order = Order.objects.get(id=order_id)
     order.status = "Returned"
@@ -596,6 +621,8 @@ def returnorder(request,order_id):
 
     return redirect(myorders)
 
+@never_cache
+@login_required(login_url='usersignin')
 def orderdetails(request,order_id):
     order = Order.objects.get(id=order_id)
     orderproduct = OrderProduct.objects.filter(order=order)
@@ -612,7 +639,8 @@ def orderdetails(request,order_id):
    
     return render(request,'carttemplates/orderdetails.html',context)
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def razorpay_payment(request,orderNumber):
     order = Order.objects.get(order_number=orderNumber) 
     cur_user = request.user
@@ -662,7 +690,8 @@ def razorpay_payment(request,orderNumber):
 
     return render(request,'carttemplates/invoice.html',context)
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def applycoupon(request):
     if request.method == "POST":
         order_id = request.POST['order_id']
@@ -697,7 +726,8 @@ def applycoupon(request):
 
            
 
-
+@never_cache
+@login_required(login_url='usersignin')
 def payment_page(request, order_id):
     order = Order.objects.get(id=order_id)
     order_items = OrderProduct.objects.filter(order=order)

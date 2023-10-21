@@ -6,6 +6,7 @@ from cartapp.models import *
 from django.contrib import messages,auth
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from ecommerce.decorators import never_cache
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
 from django.core.exceptions import ObjectDoesNotExist
@@ -165,13 +166,15 @@ def usersignin(request):
         
     return render(request,'usertemplates/signintemplate.html')
 
+@never_cache
+@login_required(login_url='usersignin')
 def signout(request):
     logout(request)
     messages.success(request,"Logged Out Successfully")
     return redirect('home')
 
-
-
+@never_cache
+@login_required(login_url='usersignin')
 def shop(request):
     category = request.GET.get('category')
     if category:
@@ -242,6 +245,8 @@ def productinfo(request,product_id):
     }
     return render(request,'usertemplates/productinfo.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def accountinfo(request):
     currentuser = request.user
     usr = Account.objects.get(email=currentuser)
@@ -250,6 +255,8 @@ def accountinfo(request):
     }
     return render(request,'usertemplates/accountinfo.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def profilepic(request):
     
     image = request.FILES['product_image']
@@ -258,6 +265,8 @@ def profilepic(request):
     currentuser.save()
     return redirect('accountinfo')
 
+@never_cache
+@login_required(login_url='usersignin')
 def editaccountinfo(request):
 
     currentuser = request.user
@@ -268,6 +277,8 @@ def editaccountinfo(request):
 
     return render(request,'usertemplates/editaccountinfo.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def saveuseredit(request):
      if request.method ==  "POST":
 
@@ -292,12 +303,18 @@ def saveuseredit(request):
 
      return render(request,'usertemplates/editaccountinfo.html')
 
+@never_cache
+@login_required(login_url='usersignin')
 def discarduseredit(request):
     return redirect('accountinfo')
 
+@never_cache
+@login_required(login_url='usersignin')
 def addaddress(request):
     return render(request,'usertemplates/addaddress.html')
 
+@never_cache
+@login_required(login_url='usersignin')
 def submitaddress(request):
     if request.method == 'POST':
         currentuser = Account.objects.get(id=request.user.id)
@@ -324,6 +341,8 @@ def submitaddress(request):
 
     return redirect('addaddress')
 
+@never_cache
+@login_required(login_url='usersignin')
 def ordertimesubmitaddress(request):
     if request.method == 'POST':
         currentuser = Account.objects.get(id=request.user.id)
@@ -350,6 +369,8 @@ def ordertimesubmitaddress(request):
 
     return redirect('checkout')
 
+@never_cache
+@login_required(login_url='usersignin')
 def editaddress(request):
 
     addresses = UserAddress.objects.filter(currentuser=request.user)
@@ -360,6 +381,8 @@ def editaddress(request):
     }
     return render(request,'usertemplates/editaddress.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def editaddressview(request):
     addressid = request.GET.get('address_id')
     address = UserAddress.objects.get(id=addressid)
@@ -370,6 +393,8 @@ def editaddressview(request):
 
     return render(request,'usertemplates/editaddressview.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def addresssave(request):
     addressid = request.POST['address_id']
     address = UserAddress.objects.get(id=addressid)
@@ -390,9 +415,13 @@ def addresssave(request):
 
 
 #thisfunction 'discard' is for the discard button next to the save button 
+@never_cache
+@login_required(login_url='usersignin')
 def discard(request):
     return redirect('editaddress')
 
+@never_cache
+@login_required(login_url='usersignin')
 def addressdelete(request):
 
     addressid = request.GET.get('adrs_id')
@@ -434,6 +463,8 @@ def feedback(request,product_id):
 
     return render(request, 'usertemplates/feedback.html', context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def coupondetails(request):
     coupons = Coupon.objects.all()
     context = {
@@ -452,7 +483,9 @@ def search(request):
         'products':products
     }
     return render(request,'usertemplates/search_query.html',context)
-        
+
+@never_cache
+@login_required(login_url='usersignin')     
 def invoice(request,order_id):
 
     orders = Order.objects.get(id=order_id)
@@ -466,6 +499,8 @@ def invoice(request,order_id):
     }
     return render(request,'usertemplates/invoicedownload.html',context)
 
+@never_cache
+@login_required(login_url='usersignin')
 def wallet(request):
     wallet = Wallet.objects.get(currentuser=request.user)
     c_user = Account.objects.get(email=request.user)

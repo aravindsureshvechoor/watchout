@@ -6,6 +6,7 @@ from ecommerce.models import Order
 from django.contrib import messages,auth
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from ecommerce.decorators import never_cache
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.core.paginator import Paginator
@@ -37,19 +38,22 @@ def adminsignin(request):
     return render(request,'admintemplates/adminloginpage.html')
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def adminlogout(request):
     logout(request)
     messages.success(request,'Successfuly Logged Out')
     return redirect('adminhome')
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def productmanagement(request):
     return render(request,'admintemplates/prouctmanagement.html')
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def usermanagement(request):
     users = Account.objects.all().exclude(is_superuser=True)
     paginator = Paginator(users,10)
@@ -64,7 +68,8 @@ def usermanagement(request):
     return render(request,'admintemplates/usermanagement.html',context)
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def categorymanagement(request):
     categories = Category.objects.all().order_by('-id')
     paginator = Paginator(categories,10)
@@ -78,7 +83,8 @@ def categorymanagement(request):
     return render(request,'admintemplates/categorymanagement.html',context)
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def admindashboard(request):
     users = Account.objects.all().count()
     # products = Product.objects.all().count()
@@ -114,7 +120,8 @@ def admindashboard(request):
     return render(request,'admintemplates/index.html',context)
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def addcategory(request):
     if request.method == "POST":
         category_name = request.POST.get('category_name')
@@ -132,7 +139,8 @@ def addcategory(request):
     return render(request,'admintemplates/addcategory.html')
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def editcategory(request):
 
     if request.method ==  "POST":
@@ -161,6 +169,8 @@ def editcategory(request):
         }
         return render(request,'admintemplates/editcategory.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def deactivatecategory(request,category_id):
     category = Category.objects.get(id=category_id)
     category.is_available = False
@@ -172,6 +182,8 @@ def deactivatecategory(request,category_id):
 
     return redirect('categorymanagement')
 
+@never_cache
+@login_required(login_url='adminhome')
 def activatecategory(request,category_id):
     category = Category.objects.get(id=category_id)
     category.is_available = True
@@ -182,7 +194,8 @@ def activatecategory(request,category_id):
         product.save()
     return redirect('categorymanagement')
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def deletecategory(request):
     id = request.GET.get('c_id')
 
@@ -193,7 +206,8 @@ def deletecategory(request):
     return redirect('categorymanagement')
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def addproduct(request):
 
     if request.method == "POST":
@@ -230,10 +244,13 @@ def addproduct(request):
     }
     return render(request,'admintemplates/addproduct.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def discardcategorychanges(request):
     return redirect('categorymanagement')
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def productmanagement(request):
     products = Product.objects.all().order_by('-id')
     paginator = Paginator(products,3)
@@ -251,26 +268,32 @@ def productmanagement(request):
 
 
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def deleteproduct(request):
     id = request.GET.get('id')
     product = Product.objects.get(id=id)
     product.delete()
     return redirect('productmanagement')
 
+@never_cache
+@login_required(login_url='adminhome')
 def deactivateproduct(request,product_id):
     product = Product.objects.get(id=product_id)
     product.is_available = False
     product.save()
     return redirect('productmanagement')
 
+@never_cache
+@login_required(login_url='adminhome')
 def activateproduct(request,product_id):
     product = Product.objects.get(id=product_id)
     product.is_available = True
     product.save()
     return redirect('productmanagement')
 
-
+@never_cache
+@login_required(login_url='adminhome')
 def editproduct(request):
     
     if request.method ==  "POST":
@@ -313,10 +336,14 @@ def editproduct(request):
 
     return render(request,'admintemplates/editproduct.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def discardproductchanges(request):
     return redirect('productmanagement')
 
 
+@never_cache
+@login_required(login_url='adminhome')
 def blockuser(request):
     id = request.GET.get('user_id')
 
@@ -328,7 +355,9 @@ def blockuser(request):
     user.save()
     messages.success(request,'User is Successfully Blocked')
     return redirect('usermanagement')
-    
+
+@never_cache
+@login_required(login_url='adminhome')   
 def unblockuser(request):
     id = request.GET.get('usr_id')
 
@@ -338,6 +367,8 @@ def unblockuser(request):
     messages.success(request,'User is unblocked ')
     return redirect('usermanagement')
 
+@never_cache
+@login_required(login_url='adminhome')
 def deleteuser(request):
     id = request.GET.get('user_id')
 
@@ -346,7 +377,8 @@ def deleteuser(request):
     messages.success(request,'User is Successfully Deleted')
     return redirect('usermanagement')
     
-
+@never_cache
+@login_required(login_url='adminhome')
 def ordermanagement(request):
     orders = Order.objects.all().order_by('-created_at')
     paginator = Paginator(orders, 10)  # Change 10 to the number of items per page you want
@@ -360,6 +392,8 @@ def ordermanagement(request):
 
     return render(request, 'admintemplates/ordermanagement.html', context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def admin_change_order_status(request,order_id):
     order = Order.objects.get(id=order_id)
     status = request.POST.get(f'status-{order_id}')
@@ -370,6 +404,8 @@ def admin_change_order_status(request,order_id):
     }
     return redirect('ordermanagement')
 
+@never_cache
+@login_required(login_url='adminhome')
 def coupon(request):
     coupons = Coupon.objects.all()
     paginator = Paginator(coupons, 5) 
@@ -383,6 +419,8 @@ def coupon(request):
     
     return render(request, 'admintemplates/Coupons.html', context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def addcoupon(request):
 
     if request.method == "POST":
@@ -409,6 +447,8 @@ def addcoupon(request):
 
     return render(request,'admintemplates/addcoupon.html')
 
+@never_cache
+@login_required(login_url='adminhome')
 def editcoupon(request,coupon_id):
 
     if request.method == "POST":
@@ -431,9 +471,13 @@ def editcoupon(request,coupon_id):
     }
     return render(request,'admintemplates/editcoupon.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def discardcouponchanges(request):
     return redirect('coupon')
 
+@never_cache
+@login_required(login_url='adminhome')
 def deletecoupon(request):
     coupon_id = request.GET.get('id')
     coupon = Coupon.objects.get(id=coupon_id)
@@ -441,6 +485,8 @@ def deletecoupon(request):
     messages.success(request,'Coupon deleted')
     return redirect('coupon')
 
+@never_cache
+@login_required(login_url='adminhome')
 def categoryoffer(request):
     offers = CategoryOffer.objects.all()
     context = {
@@ -448,6 +494,8 @@ def categoryoffer(request):
     }
     return render(request,'admintemplates/categoryoffer.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def addcategoryoffer(request):
     if request.method == "POST":
         enddate = request.POST['expiry_date']
@@ -484,6 +532,8 @@ def addcategoryoffer(request):
 
     return render(request,'admintemplates/addcategoryoffer.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def editcategoryoffer(request,category_id):
     cat = Category.objects.get(id=category_id)
     offer = CategoryOffer.objects.get(category=cat)
@@ -518,9 +568,13 @@ def editcategoryoffer(request,category_id):
     }
     return render(request,'admintemplates/editcategoryoffer.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def discardedit(request):
     return redirect('categoryoffer')
-    
+
+@never_cache
+@login_required(login_url='adminhome')   
 def deletecategoryoffer(request,category_id):
     cat = Category.objects.get(id=category_id)
     products = Product.objects.filter(category=cat)
@@ -533,6 +587,8 @@ def deletecategoryoffer(request,category_id):
 
     return redirect('categoryoffer')
 
+@never_cache
+@login_required(login_url='adminhome')
 def chart(request):
     users = Account.objects.all().count()
     # products = Product.objects.all().count()
@@ -566,6 +622,8 @@ def chart(request):
             }
     return render(request,'admintemplates/index.html',context)
 
+@never_cache
+@login_required(login_url='adminhome')
 def reports(request):
     if request.method == "POST":
         startdate = request.POST['start_date']
@@ -602,6 +660,8 @@ def reports(request):
         return render(request,'admintemplates/reports.html',context)
 
 
+@never_cache
+@login_required(login_url='adminhome')
 def admin_invoice(request,order_id):
 
     orders = Order.objects.get(id=order_id)
