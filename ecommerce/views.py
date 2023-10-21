@@ -406,18 +406,18 @@ def addressdelete(request):
 
 
 def addfeedback(request,product_id):
-    try:
-        if request.user.is_authenticated:
-            if request.method == "POST":
-                currentuser = request.user
-                product =  Product.objects.get(id=product_id)
-                comment = request.POST['comment']
+    
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            currentuser = request.user
+            product =  Product.objects.get(id=product_id)
+            comment = request.POST['comment']
 
-                Feedback.objects.create(currentuser=currentuser,product=product,comment=comment)
+            Feedback.objects.create(currentuser=currentuser,product=product,comment=comment)
         return redirect('feedback',product_id=product_id)
-    except:
+    else:
         messages.error(request,'Sign in to post a feedback')
-        return redirect('feedback')
+        return redirect('usersignin')
 
 def feedback(request,product_id):
     products = Product.objects.get(id=product_id)
