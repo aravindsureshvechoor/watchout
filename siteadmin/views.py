@@ -346,6 +346,7 @@ def discardproductchanges(request):
 @login_required(login_url='adminhome')
 def blockuser(request):
     id = request.GET.get('user_id')
+    print("#######################",id)
 
     user = Account.objects.get(id=id)
     if request.user.is_authenticated and request.user == user:
